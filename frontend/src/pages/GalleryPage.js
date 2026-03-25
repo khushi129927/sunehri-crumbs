@@ -16,23 +16,23 @@ export default function GalleryPage() {
   }, []);
 
   return (
-    <div data-testid="gallery-page" className="pt-20 min-h-screen">
+    <div data-testid="gallery-page" className="pt-20 min-h-screen bg-cream">
       <div className="py-16 px-6 text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-gold-light mb-3">Visual Journey</p>
-        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-gold">Our Gallery</h1>
-        <p className="text-ivory/50 mt-4 max-w-lg mx-auto">A glimpse into the world of Sunehri Crumbs — where art meets baking.</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-sage-dark font-medium mb-3">Visual Journey</p>
+        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-coffee">Our Gallery</h1>
+        <p className="text-charcoal/50 mt-4 max-w-lg mx-auto">A glimpse into the world of Sunehri Crumbs — where art meets baking.</p>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 pb-24">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="aspect-[4/3] skeleton rounded-sm" />
+              <div key={i} className="aspect-[4/3] skeleton rounded-2xl" />
             ))}
           </div>
         ) : images.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-ivory/40">No gallery images yet</p>
+            <p className="text-charcoal/40">No gallery images yet</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -42,7 +42,7 @@ export default function GalleryPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="img-zoom aspect-[4/3] rounded-sm overflow-hidden border border-gold/10 hover:border-gold/30 transition-all duration-500 group relative"
+                className="img-zoom aspect-[4/3] rounded-2xl overflow-hidden shadow-soft group relative"
                 data-testid={`gallery-image-${i}`}
               >
                 <img
@@ -51,7 +51,7 @@ export default function GalleryPage() {
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-obsidian/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
               </motion.div>
             ))}
           </div>

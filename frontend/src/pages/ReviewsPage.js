@@ -13,9 +13,7 @@ export default function ReviewsPage() {
   const [form, setForm] = useState({ name: '', rating: 5, comment: '' });
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    loadReviews();
-  }, []);
+  useEffect(() => { loadReviews(); }, []);
 
   const loadReviews = () => {
     axios.get(`${API}/reviews?approved_only=true`)
@@ -32,86 +30,83 @@ export default function ReviewsPage() {
       await axios.post(`${API}/reviews`, form);
       toast.success('Review submitted! It will appear after approval.');
       setForm({ name: '', rating: 5, comment: '' });
-    } catch {
-      toast.error('Failed to submit review');
-    } finally {
-      setSubmitting(false);
-    }
+    } catch { toast.error('Failed to submit review'); }
+    finally { setSubmitting(false); }
   };
 
   return (
-    <div data-testid="reviews-page" className="pt-20 min-h-screen">
+    <div data-testid="reviews-page" className="pt-20 min-h-screen bg-cream">
       <div className="py-16 px-6 text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-gold-light mb-3">Voices</p>
-        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-gold">Guest Reviews</h1>
+        <p className="text-xs uppercase tracking-[0.2em] text-sage-dark font-medium mb-3">Voices</p>
+        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-coffee">Guest Reviews</h1>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Review Form */}
           <motion.div initial="hidden" animate="visible" className="lg:col-span-1">
-            <form onSubmit={handleSubmit} className="glass-card p-6 space-y-5 sticky top-24" data-testid="review-form">
-              <h3 className="font-serif text-xl text-gold mb-2">Leave a Review</h3>
+            <form onSubmit={handleSubmit} className="soft-card p-6 space-y-5 sticky top-24" data-testid="review-form">
+              <h3 className="font-serif text-xl text-coffee mb-2">Leave a Review</h3>
               <div>
-                <label className="text-xs uppercase tracking-[0.15em] text-gold/70 mb-2 block">Name</label>
+                <label className="text-xs uppercase tracking-[0.12em] text-coffee/70 font-medium mb-2 block">Name</label>
                 <input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} data-testid="review-name-input"
-                  className="w-full bg-transparent border-b border-gold/30 text-ivory py-2 focus:border-gold focus:outline-none transition-colors placeholder:text-ivory/20" placeholder="Your name" />
+                  className="w-full bg-beige/30 border border-coffee/10 text-charcoal rounded-xl py-2.5 px-4 focus:border-coffee/30 focus:outline-none transition-all placeholder:text-charcoal/25" placeholder="Your name" />
               </div>
               <div>
-                <label className="text-xs uppercase tracking-[0.15em] text-gold/70 mb-2 block">Rating</label>
+                <label className="text-xs uppercase tracking-[0.12em] text-coffee/70 font-medium mb-2 block">Rating</label>
                 <div className="flex gap-1" data-testid="review-rating">
                   {[1,2,3,4,5].map(s => (
                     <button key={s} type="button" onClick={() => setForm({...form, rating: s})} data-testid={`rating-star-${s}`}>
-                      <Star className={`w-6 h-6 transition-colors ${s <= form.rating ? 'fill-gold text-gold' : 'text-ivory/20'}`} />
+                      <Star className={`w-6 h-6 transition-colors ${s <= form.rating ? 'fill-coffee text-coffee' : 'text-beige-dark'}`} />
                     </button>
                   ))}
                 </div>
               </div>
               <div>
-                <label className="text-xs uppercase tracking-[0.15em] text-gold/70 mb-2 block">Comment</label>
+                <label className="text-xs uppercase tracking-[0.12em] text-coffee/70 font-medium mb-2 block">Comment</label>
                 <textarea value={form.comment} onChange={e => setForm({...form, comment: e.target.value})} rows={4} data-testid="review-comment-input"
-                  className="w-full bg-transparent border border-gold/20 text-ivory p-3 text-sm focus:border-gold focus:outline-none transition-colors placeholder:text-ivory/20 resize-none" placeholder="Share your experience..." />
+                  className="w-full bg-beige/30 border border-coffee/10 text-charcoal rounded-xl p-4 text-sm focus:border-coffee/30 focus:outline-none transition-all placeholder:text-charcoal/25 resize-none" placeholder="Share your experience..." />
               </div>
               <button type="submit" disabled={submitting} data-testid="review-submit-button"
-                className="w-full bg-gold text-obsidian font-semibold py-3 border border-gold hover:bg-forest hover:text-gold transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2">
+                className="w-full bg-coffee text-cream font-semibold py-3 rounded-full hover:bg-sage transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2">
                 <Send className="w-4 h-4" /> {submitting ? 'Submitting...' : 'Submit Review'}
               </button>
             </form>
           </motion.div>
 
           {/* Reviews List */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-5">
             {loading ? (
               [...Array(3)].map((_, i) => (
-                <div key={i} className="glass-card p-6 space-y-3">
-                  <div className="h-4 skeleton w-32 rounded" />
-                  <div className="h-3 skeleton w-full rounded" />
-                  <div className="h-3 skeleton w-3/4 rounded" />
+                <div key={i} className="soft-card p-6 space-y-3">
+                  <div className="h-4 skeleton w-32" />
+                  <div className="h-3 skeleton w-full" />
+                  <div className="h-3 skeleton w-3/4" />
                 </div>
               ))
             ) : reviews.length === 0 ? (
-              <div className="text-center py-16"><p className="text-ivory/40">No reviews yet. Be the first!</p></div>
+              <div className="text-center py-16"><p className="text-charcoal/40">No reviews yet. Be the first!</p></div>
             ) : (
               reviews.map((r, i) => (
                 <motion.div key={r.id} variants={fadeUp} custom={i} initial="hidden" animate="visible"
-                  className="glass-card p-6" data-testid={`review-item-${i}`}>
+                  className="soft-card p-6" data-testid={`review-item-${i}`}>
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-gold/10 border border-gold/20 flex items-center justify-center text-gold font-serif text-lg">
+                    <div className="w-10 h-10 bg-beige rounded-full flex items-center justify-center text-coffee font-serif text-lg font-semibold">
                       {r.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-ivory font-medium text-sm">{r.name}</p>
+                      <p className="text-charcoal font-medium text-sm">{r.name}</p>
                       <div className="flex gap-0.5 mt-0.5">
                         {[...Array(r.rating)].map((_, j) => (
-                          <Star key={j} className="w-3 h-3 fill-gold text-gold" />
+                          <Star key={j} className="w-3 h-3 fill-coffee text-coffee" />
                         ))}
                         {[...Array(5 - r.rating)].map((_, j) => (
-                          <Star key={j} className="w-3 h-3 text-ivory/10" />
+                          <Star key={j} className="w-3 h-3 text-beige-dark" />
                         ))}
                       </div>
                     </div>
                   </div>
-                  <p className="text-ivory/60 text-sm leading-relaxed">{r.comment}</p>
+                  <p className="text-charcoal/60 text-sm leading-relaxed">{r.comment}</p>
                 </motion.div>
               ))
             )}

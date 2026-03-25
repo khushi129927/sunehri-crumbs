@@ -21,11 +21,11 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav data-testid="navbar" className="fixed w-full z-50 bg-obsidian/80 backdrop-blur-xl border-b border-gold/10 px-6 py-3">
+    <nav data-testid="navbar" className="fixed w-full z-50 bg-cream/90 backdrop-blur-xl border-b border-coffee/8 px-6 py-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2 group" data-testid="navbar-brand">
-          <UtensilsCrossed className="w-6 h-6 text-gold transition-transform group-hover:rotate-12" />
-          <span className="font-serif text-2xl font-medium text-gold tracking-tight">Sunehri Crumbs</span>
+        <Link to="/" className="flex items-center gap-2.5 group" data-testid="navbar-brand">
+          <UtensilsCrossed className="w-5 h-5 text-coffee transition-transform group-hover:rotate-12" />
+          <span className="font-serif text-2xl font-semibold text-coffee tracking-tight">Sunehri Crumbs</span>
         </Link>
 
         {/* Desktop */}
@@ -35,17 +35,17 @@ export default function Navbar() {
               key={l.to}
               to={l.to}
               data-testid={`nav-link-${l.label.toLowerCase().replace(/\s+/g, '-')}`}
-              className={`text-sm font-sans uppercase tracking-[0.15em] transition-colors duration-300 ${
-                isActive(l.to) ? 'text-gold' : 'text-ivory/70 hover:text-gold'
+              className={`text-[13px] font-medium uppercase tracking-[0.12em] transition-colors duration-300 ${
+                isActive(l.to) ? 'text-coffee' : 'text-charcoal/50 hover:text-coffee'
               }`}
             >
               {l.label}
             </Link>
           ))}
-          <Link to="/cart" data-testid="nav-cart-button" className="relative ml-2 text-ivory/70 hover:text-gold transition-colors">
+          <Link to="/cart" data-testid="nav-cart-button" className="relative ml-2 text-charcoal/50 hover:text-coffee transition-colors">
             <ShoppingCart className="w-5 h-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 w-5 h-5 bg-gold text-obsidian text-xs font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 w-5 h-5 bg-coffee text-cream text-xs font-bold rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}
@@ -54,15 +54,15 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <div className="flex items-center gap-4 lg:hidden">
-          <Link to="/cart" data-testid="nav-cart-button-mobile" className="relative text-ivory/70 hover:text-gold transition-colors">
+          <Link to="/cart" data-testid="nav-cart-button-mobile" className="relative text-charcoal/50 hover:text-coffee transition-colors">
             <ShoppingCart className="w-5 h-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 w-5 h-5 bg-gold text-obsidian text-xs font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 w-5 h-5 bg-coffee text-cream text-xs font-bold rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}
           </Link>
-          <button onClick={() => setOpen(!open)} data-testid="mobile-menu-toggle" className="text-ivory">
+          <button onClick={() => setOpen(!open)} data-testid="mobile-menu-toggle" className="text-charcoal">
             {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
@@ -75,16 +75,16 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden overflow-hidden border-t border-gold/10 mt-3"
+            className="lg:hidden overflow-hidden border-t border-coffee/8 mt-3"
           >
-            <div className="flex flex-col py-4 gap-3">
+            <div className="flex flex-col py-4 gap-1">
               {links.map(l => (
                 <Link
                   key={l.to}
                   to={l.to}
                   onClick={() => setOpen(false)}
-                  className={`text-sm uppercase tracking-[0.15em] px-2 py-2 transition-colors ${
-                    isActive(l.to) ? 'text-gold' : 'text-ivory/70 hover:text-gold'
+                  className={`text-sm uppercase tracking-[0.12em] px-3 py-2.5 rounded-lg transition-colors ${
+                    isActive(l.to) ? 'text-coffee bg-beige/50' : 'text-charcoal/50 hover:text-coffee hover:bg-beige/30'
                   }`}
                 >
                   {l.label}

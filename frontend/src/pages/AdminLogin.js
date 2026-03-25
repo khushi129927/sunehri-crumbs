@@ -20,34 +20,33 @@ export default function AdminLogin() {
       await login(email, password);
       toast.success('Welcome back!');
       navigate('/admin');
-    } catch {
-      toast.error('Invalid credentials');
-    } finally {
-      setLoading(false);
-    }
+    } catch { toast.error('Invalid credentials'); }
+    finally { setLoading(false); }
   };
 
   return (
-    <div data-testid="admin-login-page" className="min-h-screen flex items-center justify-center px-6 bg-obsidian">
+    <div data-testid="admin-login-page" className="min-h-screen flex items-center justify-center px-6 bg-cream">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
-          <UtensilsCrossed className="w-10 h-10 text-gold mx-auto mb-4" />
-          <h1 className="font-serif text-3xl text-gold">Admin Panel</h1>
-          <p className="text-ivory/40 text-sm mt-2">Sunehri Crumbs Management</p>
+          <div className="w-14 h-14 mx-auto mb-4 bg-beige rounded-2xl flex items-center justify-center">
+            <UtensilsCrossed className="w-6 h-6 text-coffee" />
+          </div>
+          <h1 className="font-serif text-3xl text-coffee">Admin Panel</h1>
+          <p className="text-charcoal/40 text-sm mt-2">Sunehri Crumbs Management</p>
         </div>
-        <form onSubmit={handleSubmit} className="glass-card p-8 space-y-6 gold-glow" data-testid="admin-login-form">
+        <form onSubmit={handleSubmit} className="soft-card p-8 space-y-6 shadow-soft-lg" data-testid="admin-login-form">
           <div>
-            <label className="text-xs uppercase tracking-[0.15em] text-gold/70 mb-2 flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> Email</label>
+            <label className="text-xs uppercase tracking-[0.12em] text-coffee/70 font-medium mb-2 flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> Email</label>
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} data-testid="admin-email-input"
-              className="w-full bg-transparent border-b border-gold/30 text-ivory py-2.5 focus:border-gold focus:outline-none transition-colors placeholder:text-ivory/20" placeholder="admin@bakery.com" />
+              className="w-full bg-beige/30 border border-coffee/10 text-charcoal rounded-xl py-3 px-4 focus:border-coffee/30 focus:outline-none focus:ring-2 focus:ring-coffee/5 transition-all placeholder:text-charcoal/25" placeholder="admin@bakery.com" />
           </div>
           <div>
-            <label className="text-xs uppercase tracking-[0.15em] text-gold/70 mb-2 flex items-center gap-2"><Lock className="w-3.5 h-3.5" /> Password</label>
+            <label className="text-xs uppercase tracking-[0.12em] text-coffee/70 font-medium mb-2 flex items-center gap-2"><Lock className="w-3.5 h-3.5" /> Password</label>
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} data-testid="admin-password-input"
-              className="w-full bg-transparent border-b border-gold/30 text-ivory py-2.5 focus:border-gold focus:outline-none transition-colors placeholder:text-ivory/20" placeholder="Enter password" />
+              className="w-full bg-beige/30 border border-coffee/10 text-charcoal rounded-xl py-3 px-4 focus:border-coffee/30 focus:outline-none focus:ring-2 focus:ring-coffee/5 transition-all placeholder:text-charcoal/25" placeholder="Enter password" />
           </div>
           <button type="submit" disabled={loading} data-testid="admin-login-button"
-            className="w-full bg-gold text-obsidian font-semibold py-3.5 border border-gold hover:bg-forest hover:text-gold transition-all duration-300 disabled:opacity-50">
+            className="w-full bg-coffee text-cream font-semibold py-3.5 rounded-full hover:bg-sage transition-all duration-300 disabled:opacity-50">
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>

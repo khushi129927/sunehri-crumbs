@@ -10,17 +10,11 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)'
       },
       colors: {
-        obsidian: '#1A1A1A',
-        gold: {
-          DEFAULT: '#D4AF37',
-          light: '#EED888',
-          muted: 'rgba(212, 175, 55, 0.2)',
-        },
-        ivory: {
-          DEFAULT: '#FFFFF0',
-          muted: 'rgba(255, 255, 240, 0.7)',
-        },
-        forest: '#1B3022',
+        cream: '#F8F5F0',
+        beige: { DEFAULT: '#E8DED1', light: '#F0EAE0', dark: '#D9CCBB' },
+        coffee: { DEFAULT: '#6B4F3A', light: '#8B6F5A', dark: '#503A28' },
+        charcoal: { DEFAULT: '#2B2B2B', light: '#4A4A4A', muted: 'rgba(43, 43, 43, 0.5)' },
+        sage: { DEFAULT: '#A3B18A', light: '#B8C4A3', dark: '#7A8C64' },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
@@ -37,11 +31,12 @@ module.exports = {
       },
       fontFamily: {
         serif: ["'Cormorant Garamond'", "serif"],
-        sans: ["'Manrope'", "sans-serif"],
+        sans: ["'DM Sans'", "sans-serif"],
       },
       boxShadow: {
-        'gold-glow': '0 0 20px rgba(212, 175, 55, 0.15)',
-        'gold-glow-strong': '0 0 30px rgba(212, 175, 55, 0.3)',
+        'soft': '0 1px 3px rgba(107,79,58,0.06), 0 4px 16px rgba(107,79,58,0.04)',
+        'soft-lg': '0 2px 8px rgba(107,79,58,0.1), 0 8px 32px rgba(107,79,58,0.08)',
+        'soft-xl': '0 4px 12px rgba(107,79,58,0.12), 0 12px 40px rgba(107,79,58,0.1)',
       },
       keyframes: {
         'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },

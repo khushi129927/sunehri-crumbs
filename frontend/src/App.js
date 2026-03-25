@@ -18,7 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
-  if (loading) return <div className="min-h-screen bg-obsidian flex items-center justify-center"><p className="text-gold font-serif text-xl">Loading...</p></div>;
+  if (loading) return <div className="min-h-screen bg-cream flex items-center justify-center"><p className="text-coffee font-serif text-xl">Loading...</p></div>;
   return isAuthenticated ? children : <Navigate to="/admin/login" />;
 }
 
@@ -36,16 +36,15 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <div className="min-h-screen bg-obsidian text-ivory font-sans">
+        <div className="min-h-screen bg-cream text-charcoal font-sans">
           <Toaster
             position="top-right"
             toastOptions={{
-              style: { background: '#1A1A1A', border: '1px solid rgba(212,175,55,0.2)', color: '#FFFFF0' },
+              style: { background: '#FFFFFF', border: '1px solid rgba(107,79,58,0.1)', color: '#2B2B2B', borderRadius: '12px' },
             }}
           />
           <BrowserRouter>
             <Routes>
-              {/* Public routes */}
               <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
               <Route path="/menu" element={<PublicLayout><MenuPage /></PublicLayout>} />
               <Route path="/cart" element={<PublicLayout><CartPage /></PublicLayout>} />
@@ -53,12 +52,8 @@ function App() {
               <Route path="/gallery" element={<PublicLayout><GalleryPage /></PublicLayout>} />
               <Route path="/reviews" element={<PublicLayout><ReviewsPage /></PublicLayout>} />
               <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
-              
-              {/* Admin routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-              
-              {/* Fallback */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </BrowserRouter>
