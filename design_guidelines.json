@@ -1,0 +1,123 @@
+{
+  "project_name": "Sunehri Crumbs",
+  "tagline": "Crafted with Care, Baked to Perfection",
+  "theme": "dark",
+  "archetype": "5 (Jewel & Luxury)",
+  "design_philosophy": "Dark cinematic luxury bakery. Emphasizes warm, inviting golden tones against a deep, premium obsidian background. High use of negative space, spotlight-style lighting effects, elegant typography, and rich textures. No generic flat UI; everything must feel crafted and artisanal.",
+  "colors": {
+    "background": "#1A1A1A",
+    "text_primary": "#FFFFF0",
+    "text_secondary": "rgba(255, 255, 240, 0.7)",
+    "primary_accent": "#D4AF37",
+    "secondary_accent": "#1B3022",
+    "surface_cards": "rgba(255, 255, 255, 0.03)",
+    "borders": "rgba(212, 175, 55, 0.2)"
+  },
+  "tailwind_config_extensions": {
+    "colors": {
+      "obsidian": "#1A1A1A",
+      "gold": {
+        "DEFAULT": "#D4AF37",
+        "light": "#EED888",
+        "muted": "rgba(212, 175, 55, 0.2)"
+      },
+      "ivory": {
+        "DEFAULT": "#FFFFF0",
+        "muted": "rgba(255, 255, 240, 0.7)"
+      },
+      "forest": "#1B3022"
+    },
+    "fontFamily": {
+      "serif": ["'Cormorant Garamond'", "serif"],
+      "sans": ["'Manrope'", "sans-serif"]
+    },
+    "boxShadow": {
+      "gold-glow": "0 0 20px rgba(212, 175, 55, 0.15)",
+      "gold-glow-strong": "0 0 30px rgba(212, 175, 55, 0.3)"
+    }
+  },
+  "typography": {
+    "headings": {
+      "font": "Cormorant Garamond",
+      "style": "font-serif tracking-tight text-gold",
+      "h1": "text-5xl sm:text-6xl lg:text-7xl font-light",
+      "h2": "text-3xl sm:text-4xl lg:text-5xl font-medium",
+      "h3": "text-2xl sm:text-3xl font-medium"
+    },
+    "body": {
+      "font": "Manrope",
+      "style": "font-sans text-ivory leading-relaxed",
+      "base": "text-base sm:text-lg text-ivory-muted"
+    },
+    "labels": {
+      "style": "font-sans text-xs uppercase tracking-[0.2em] text-gold-light"
+    }
+  },
+  "layout_and_spacing": {
+    "spacing_scale": "Generous (p-8, p-16, p-24) to emphasize luxury and breathing room.",
+    "marketing_pages": "Use bento grids with wide gaps (gap-8, gap-12). Leverage asymmetry.",
+    "admin_dashboard": "Dense bento grid (Control Room mode) using p-4/p-6, gap-4/gap-6, avoiding excess negative space to prioritize data density.",
+    "borders": "1px solid border-gold-muted for cards, combined with backdrop-blur for glassmorphism."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-gold text-obsidian font-semibold px-8 py-3 hover:bg-forest hover:text-gold transition-all duration-300 shadow-gold-glow hover:shadow-gold-glow-strong rounded-none border border-gold",
+      "secondary": "bg-transparent border border-gold text-gold px-8 py-3 hover:bg-gold hover:text-obsidian transition-all duration-300 rounded-none"
+    },
+    "cards": {
+      "style": "bg-[rgba(255,255,255,0.02)] border border-gold/10 backdrop-blur-md p-6 sm:p-8 hover:border-gold/30 transition-all duration-500 rounded-sm hover:-translate-y-1"
+    },
+    "inputs": {
+      "style": "bg-transparent border-b border-gold/30 text-ivory focus:border-gold focus:outline-none focus:ring-0 rounded-none px-0 py-2 w-full placeholder:text-ivory/30 transition-colors"
+    },
+    "navigation": {
+      "style": "fixed w-full z-50 bg-obsidian/80 backdrop-blur-xl border-b border-gold/10 px-6 py-4 flex justify-between items-center"
+    }
+  },
+  "motion_and_interactions": {
+    "hover_states": "Buttons shift from Gold bg to Deep Forest Green bg with Gold text. Images have subtle slow-scale (1.05x).",
+    "page_transitions": "Framer motion fade-in and slight slide-up (y: 20 -> 0) with duration 0.6s and ease-out.",
+    "scroll_effects": "Use lenis for smooth momentum scrolling. Parallax effect on hero background image."
+  },
+  "media": {
+    "hero_background": {
+      "url": "https://images.pexels.com/photos/36338003/pexels-photo-36338003.jpeg",
+      "description": "Warm, intimate cinematic café interior with rustic decor and dim lighting."
+    },
+    "signature_pastry_1": {
+      "url": "https://images.pexels.com/photos/7440352/pexels-photo-7440352.jpeg",
+      "description": "Chocolate doughnuts on dark slate."
+    },
+    "signature_pastry_2": {
+      "url": "https://images.pexels.com/photos/7440422/pexels-photo-7440422.jpeg",
+      "description": "Freshly baked croissants with dark luxury tone."
+    },
+    "signature_cake": {
+      "url": "https://images.pexels.com/photos/3740193/pexels-photo-3740193.jpeg",
+      "description": "Rich dark chocolate cake slice with tea."
+    },
+    "artisan_bread": {
+      "url": "https://images.unsplash.com/photo-1628809643520-7c20491d5324?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwyfHxzb3VyZG91Z2glMjBicmVhZCUyMGRhcmt8ZW58MHx8fHwxNzc0NDYzMzc4fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Dark sourdough bread on black textile."
+    },
+    "gallery_interior": {
+      "url": "https://images.pexels.com/photos/2174069/pexels-photo-2174069.jpeg",
+      "description": "Moody warm cafe interior with vintage lights."
+    },
+    "overlay_rules": "All background images MUST have a gradient overlay (`bg-gradient-to-b from-obsidian/70 to-obsidian/90`) to ensure text contrast and maintain the #1A1A1A rich dark theme."
+  },
+  "iconography": "lucide-react with thin stroke widths (1.5). Colors must be gold or ivory.",
+  "accessibility": {
+    "contrast": "Ensure #FFFFF0 against #1A1A1A (passes easily). Ensure gold #D4AF37 against #1A1A1A passes WCAG AA.",
+    "testing": "All interactive elements (buttons, links, inputs, menu items, cart triggers) MUST have a `data-testid` attribute in kebab-case (e.g., `data-testid=\"add-to-cart-button\"`)."
+  },
+  "instructions_to_main_agent": [
+    "Strictly apply the color palette globally. The background must be #1A1A1A in global CSS (index.css).",
+    "Install and configure 'lucide-react', 'framer-motion', and 'clsx'/'tailwind-merge'.",
+    "Use standard semantic HTML sectioning. Ensure generous padding using Tailwind.",
+    "For the dynamic menu, implement robust state management for categories and cart.",
+    "Admin dashboard must use a denser layout compared to the marketing side. Strip away excessive padding in admin views to prioritize data.",
+    "Implement Shadcn UI for dropdowns, modals, and tables in the admin dashboard, but customize them to remove default Vercel/light-theme aesthetics, applying the Obsidian/Gold theme.",
+    "Hero section must use the provided `hero_background` image URL, with text centered or elegantly left-aligned, employing the `Cormorant Garamond` serif font in gold."
+  ]
+}
