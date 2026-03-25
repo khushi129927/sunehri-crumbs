@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import { motion } from 'framer-motion';
 import { Search, Plus, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { toast } from 'sonner';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const CATEGORIES = ['All', 'Breads', 'Pastries', 'Donuts', 'Cakes', 'Beverages'];
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5 } })
-};
 
 export default function MenuPage() {
   const [items, setItems] = useState([]);
@@ -110,7 +104,7 @@ export default function MenuPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {items.map((item, i) => (
-              <motion.div key={item.id} variants={fadeUp} custom={i} initial="hidden" animate="visible"
+              <div key={item.id}
                 className="soft-card overflow-hidden group" data-testid={`menu-item-${item.id}`}>
                 <div className="img-zoom aspect-[4/3] relative">
                   <img src={item.image_url || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400'} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
@@ -133,7 +127,7 @@ export default function MenuPage() {
                     </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}

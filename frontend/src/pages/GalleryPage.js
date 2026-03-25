@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { motion } from 'framer-motion';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -37,11 +36,8 @@ export default function GalleryPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {images.map((img, i) => (
-              <motion.div
+              <div
                 key={img.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="img-zoom aspect-[4/3] rounded-2xl overflow-hidden shadow-soft group relative"
                 data-testid={`gallery-image-${i}`}
               >
@@ -52,7 +48,7 @@ export default function GalleryPage() {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
-              </motion.div>
+              </div>
             ))}
           </div>
         )}

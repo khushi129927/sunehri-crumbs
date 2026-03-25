@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { motion } from 'framer-motion';
 import { Star, Send } from 'lucide-react';
 import { toast } from 'sonner';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }) };
 
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState([]);
@@ -44,7 +42,7 @@ export default function ReviewsPage() {
       <div className="max-w-6xl mx-auto px-6 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Review Form */}
-          <motion.div initial="hidden" animate="visible" className="lg:col-span-1">
+          <div className="lg:col-span-1">
             <form onSubmit={handleSubmit} className="soft-card p-6 space-y-5 sticky top-24" data-testid="review-form">
               <h3 className="font-serif text-xl text-coffee mb-2">Leave a Review</h3>
               <div>
@@ -72,7 +70,7 @@ export default function ReviewsPage() {
                 <Send className="w-4 h-4" /> {submitting ? 'Submitting...' : 'Submit Review'}
               </button>
             </form>
-          </motion.div>
+          </div>
 
           {/* Reviews List */}
           <div className="lg:col-span-2 space-y-5">
@@ -88,7 +86,7 @@ export default function ReviewsPage() {
               <div className="text-center py-16"><p className="text-charcoal/40">No reviews yet. Be the first!</p></div>
             ) : (
               reviews.map((r, i) => (
-                <motion.div key={r.id} variants={fadeUp} custom={i} initial="hidden" animate="visible"
+                <div key={r.id}
                   className="soft-card p-6" data-testid={`review-item-${i}`}>
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-beige rounded-full flex items-center justify-center text-coffee font-serif text-lg font-semibold">
@@ -107,7 +105,7 @@ export default function ReviewsPage() {
                     </div>
                   </div>
                   <p className="text-charcoal/60 text-sm leading-relaxed">{r.comment}</p>
-                </motion.div>
+                </div>
               ))
             )}
           </div>
