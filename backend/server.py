@@ -133,6 +133,10 @@ class ContactCreate(BaseModel):
 class TableSetup(BaseModel):
     count: int
 
+class WaiterCallCreate(BaseModel):
+    table_number: int
+    message: str = "Assistance needed"
+
 # ============ Auth Routes ============
 @api_router.post("/auth/login")
 async def login(req: LoginRequest):
@@ -252,12 +256,11 @@ async def setup_tables(setup: TableSetup, admin=Depends(get_current_admin)):
     tables = []
     base_url = os.environ.get("FRONTEND_URL", "")
     for i in range(1, setup.count + 1):
-        qr_url = f"{base_url}/menu?table={i}"
-        # Generate QR code as base64
-        qr = qrcode.QRCode(version=1, box_size=10, border=4)
+        qr_url = f"{base_url}/table/{i}"
+        qr = qrcode.QRCode(version=1, box_size=12, border=3, error_correction=qrcode.constants.ERROR_CORRECT_H)
         qr.add_data(qr_url)
         qr.make(fit=True)
-        img = qr.make_image(fill_color="#D4AF37", back_color="#1A1A1A")
+        img = qr.make_image(fill_color="#6B4F3A", back_color="#F8F5F0")
         buffer = io.BytesIO()
         img.save(buffer, format="PNG")
         qr_base64 = base64.b64encode(buffer.getvalue()).decode()
@@ -282,6 +285,34 @@ async def get_tables(admin=Depends(get_current_admin)):
 @api_router.get("/tables/count")
 async def get_table_count():
     count = await db.tables.count_documents({})
+    return {"count": count}
+
+# ============ Waiter Call Routes ============
+@api_router.post("/waiter-calls")
+async def create_waiter_call(call: WaiterCallCreate):
+    doc = call.model_dump()
+    doc["id"] = str(uuid.uuid4())
+    doc["status"] = "pending"
+    doc["created_at"] = datetime.now(timezone.utc).isoformat()
+    await db.waiter_calls.insert_one(doc)
+    created = await db.waiter_calls.find_one({"id": doc["id"]}, {"_id": 0})
+    return created
+
+@api_router.get("/waiter-calls")
+async def get_waiter_calls(admin=Depends(get_current_admin)):
+    calls = await db.waiter_calls.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return calls
+
+@api_router.put("/waiter-calls/{call_id}/dismiss")
+async def dismiss_waiter_call(call_id: str, admin=Depends(get_current_admin)):
+    result = await db.waiter_calls.update_one({"id": call_id}, {"$set": {"status": "dismissed"}})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Call not found")
+    return {"message": "Dismissed"}
+
+@api_router.get("/waiter-calls/pending-count")
+async def get_pending_waiter_calls(admin=Depends(get_current_admin)):
+    count = await db.waiter_calls.count_documents({"status": "pending"})
     return {"count": count}
 
 # ============ Booking Routes ============
