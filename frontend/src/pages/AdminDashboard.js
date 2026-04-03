@@ -117,7 +117,7 @@ export default function AdminDashboard() {
   const activeTabLabel = tabs.find(t => t.id === activeTab)?.label || 'Dashboard';
 
   return (
-    <div data-testid="admin-dashboard" className="min-h-screen bg-cream">
+    <div data-testid="admin-dashboard" className="min-h-screen bg-cream lg:flex">
       {/* Mobile Top Bar */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-coffee/8 px-4 py-3 flex items-center justify-between" data-testid="admin-mobile-header">
         <button onClick={() => setSidebarOpen(true)} data-testid="admin-menu-toggle" className="w-10 h-10 flex items-center justify-center rounded-xl text-coffee hover:bg-beige/50 transition-colors">
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-coffee/8 p-4 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:w-56 lg:shrink-0 lg:min-h-screen lg:sticky lg:top-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-coffee/8 p-4 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:w-56 lg:shrink-0 lg:h-screen lg:sticky lg:top-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         data-testid="admin-sidebar"
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="lg:ml-0 pt-16 lg:pt-0 flex-1 p-4 sm:p-6 overflow-auto min-h-screen">
+      <main className="pt-16 lg:pt-0 flex-1 p-4 sm:p-6 overflow-auto">
         {loading && <div className="text-charcoal/30 text-sm mb-4">Loading...</div>}
 
         {/* Dashboard */}

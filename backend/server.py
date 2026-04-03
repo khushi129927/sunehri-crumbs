@@ -256,7 +256,7 @@ async def setup_tables(setup: TableSetup, admin=Depends(get_current_admin)):
     tables = []
     base_url = os.environ.get("FRONTEND_URL", "")
     for i in range(1, setup.count + 1):
-        qr_url = f"{base_url}/table/{i}"
+        qr_url = f"{base_url}/menu?table={i}"
         qr = qrcode.QRCode(version=1, box_size=12, border=3, error_correction=qrcode.constants.ERROR_CORRECT_H)
         qr.add_data(qr_url)
         qr.make(fit=True)

@@ -101,3 +101,90 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  Fix two issues in the Sunehri Crumbs bakery website:
+  1. Desktop admin panel only showing navigation bar titles, content not visible (works fine on mobile)
+  2. QR codes should link to the menu page where users can order, with orders appearing in admin panel with table number
+
+backend:
+  - task: "QR Code URL Generation"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Changed QR code URL from /table/{i} to /menu?table={i} so users see the menu page when scanning"
+
+frontend:
+  - task: "Admin Dashboard Desktop Layout"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/AdminDashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Fixed desktop layout by adding lg:flex to main container and lg:relative to sidebar for proper side-by-side positioning"
+
+  - task: "Menu Page Table Parameter Integration"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/MenuPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Already implemented - MenuPage reads table parameter from URL and passes to cart"
+
+  - task: "Cart Order Submission with Table Number"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/CartPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Already implemented - CartPage submits orders with table_number to backend"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Admin Dashboard Desktop Layout"
+    - "QR Code URL Generation"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: |
+      Fixed both requested issues:
+      1. Admin dashboard desktop layout - added flex container so sidebar and content display properly
+      2. QR code URLs - changed from /table/{i} to /menu?table={i} to show menu page
+      
+      The complete flow now works:
+      - Admin generates QR codes in Tables & QR section
+      - QR codes point to /menu?table={number}
+      - Users scan QR, see menu with table indicator
+      - Users add items to cart
+      - Cart shows table number
+      - Orders submitted with table_number
+      - Admin sees orders with table numbers in Orders section
+      
+      Note: Existing tables in database still have old URLs. Admin needs to regenerate tables to get new QR codes.
