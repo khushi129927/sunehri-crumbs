@@ -70,20 +70,31 @@
 /* Selection */
 ::selection { background: rgba(163, 177, 138, 0.3); color: #2B2B2B; }
 
-/* Hide Emergent Badge - Force hide on all pages */
+/* Hide Emergent Badge - Force hide on all pages with maximum priority */
 #emergent-badge,
 a[id*="emergent"],
 a[href*="emergent.sh"],
-a[href*="emergentagent.com"][id*="badge"],
+a[href*="emergentagent.com"],
+a[href*="utm_source=emergent"],
 [id*="emergent-badge"],
-a[href*="utm_source=emergent"] {
+[id*="emergent"],
+a[target="_blank"][href*="emergent"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
   position: absolute !important;
   left: -9999px !important;
+  top: -9999px !important;
   width: 0 !important;
   height: 0 !important;
   overflow: hidden !important;
+  z-index: -9999 !important;
+  clip: rect(0,0,0,0) !important;
+}
+
+/* Additional catch-all for any fixed/absolute positioned badges */
+a[style*="position: fixed"][style*="bottom"],
+a[style*="position: absolute"][style*="bottom"] {
+  display: none !important;
 }

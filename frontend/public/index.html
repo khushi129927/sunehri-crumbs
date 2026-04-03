@@ -23,6 +23,39 @@
         -->
         <title>Sunehri Crumbs - Premium Bakery</title>
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
+        <script>
+          // Aggressively remove Emergent badge
+          (function() {
+            function removeBadge() {
+              const selectors = [
+                '#emergent-badge',
+                'a[href*="emergent.sh"]',
+                'a[href*="utm_source=emergent"]',
+                '[id*="emergent-badge"]',
+                'a[id*="emergent"]'
+              ];
+              selectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => el.remove());
+              });
+            }
+            // Run immediately
+            removeBadge();
+            // Run when DOM is ready
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', removeBadge);
+            }
+            // Keep checking and removing
+            setInterval(removeBadge, 500);
+            // Watch for new elements
+            if (window.MutationObserver) {
+              const observer = new MutationObserver(removeBadge);
+              observer.observe(document.body || document.documentElement, {
+                childList: true,
+                subtree: true
+              });
+            }
+          })();
+        </script>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
