@@ -42,6 +42,7 @@ export default function AdminDashboard() {
   const [menuForm, setMenuForm] = useState({ name: '', category: 'Breads', price: '', description: '', image_url: '', is_signature: false });
   const [editingMenu, setEditingMenu] = useState(null);
   const [tableCount, setTableCount] = useState(10);
+  const [restaurantCapacity, setRestaurantCapacity] = useState(10);
 
   const headers = { Authorization: `Bearer ${token}` };
 
@@ -52,7 +53,12 @@ export default function AdminDashboard() {
       else if (activeTab === 'menu') { const r = await axios.get(`${API}/menu`); setMenuItems(r.data); }
       else if (activeTab === 'orders') { const r = await axios.get(`${API}/orders`, { headers }); setOrders(r.data); }
       else if (activeTab === 'tables') { const r = await axios.get(`${API}/tables`, { headers }); setTables(r.data); }
-      else if (activeTab === 'bookings') { const r = await axios.get(`${API}/bookings`, { headers }); setBookings(r.data); }
+      else if (activeTab === 'bookings') { 
+        const r = await axios.get(`${API}/bookings`, { headers }); 
+        setBookings(r.data);
+        const cap = await axios.get(`${API}/settings/restaurant-capacity`, { headers });
+        setRestaurantCapacity(cap.data.capacity);
+      }
       else if (activeTab === 'reviews') { const r = await axios.get(`${API}/reviews/all`, { headers }); setReviews(r.data); }
       else if (activeTab === 'contacts') { const r = await axios.get(`${API}/contacts`, { headers }); setContacts(r.data); }
       else if (activeTab === 'gallery') { const r = await axios.get(`${API}/gallery`); setGallery(r.data); }
@@ -92,6 +98,16 @@ export default function AdminDashboard() {
 
   const handleOrderStatus = async (id, status) => { try { await axios.put(`${API}/orders/${id}/status?status=${status}`, {}, { headers }); toast.success(`Status: ${status}`); loadData(); } catch { toast.error('Failed'); } };
   const handleSetupTables = async () => { try { await axios.post(`${API}/tables/setup`, { count: tableCount }, { headers }); toast.success(`${tableCount} tables created`); loadData(); } catch { toast.error('Failed'); } };
+  const handleUpdateCapacity = async () => { 
+    if (restaurantCapacity < 1 || restaurantCapacity > 100) {
+      toast.error('Capacity must be between 1 and 100');
+      return;
+    }
+    try { 
+      await axios.put(`${API}/settings/restaurant-capacity?capacity=${restaurantCapacity}`, {}, { headers }); 
+      toast.success(`Restaurant capacity set to ${restaurantCapacity} tables`); 
+    } catch { toast.error('Failed'); } 
+  };
   const handleApproveReview = async (id) => { try { await axios.put(`${API}/reviews/${id}/approve`, {}, { headers }); toast.success('Approved'); loadData(); } catch { toast.error('Failed'); } };
   const handleDeleteReview = async (id) => { try { await axios.delete(`${API}/reviews/${id}`, { headers }); toast.success('Deleted'); loadData(); } catch { toast.error('Failed'); } };
   const handleDeleteBooking = async (id) => { try { await axios.delete(`${API}/bookings/${id}`, { headers }); toast.success('Deleted'); loadData(); } catch { toast.error('Failed'); } };
@@ -336,7 +352,35 @@ export default function AdminDashboard() {
         {/* Bookings */}
         {activeTab === 'bookings' && (
           <div data-testid="admin-bookings-management">
-            <h2 className="font-serif text-xl sm:text-2xl text-coffee mb-4 sm:mb-6">Bookings</h2>
+            <h2 className="font-serif text-xl sm:text-2xl text-coffee mb-4 sm:mb-6">Bookings Management</h2>
+            
+            {/* Restaurant Capacity Setting */}
+            <div className="bg-white rounded-2xl border border-coffee/8 p-4 mb-6 shadow-soft" data-testid="capacity-setting">
+              <h3 className="text-coffee font-medium text-sm mb-3">Restaurant Capacity</h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <label className="text-charcoal/60 text-sm">Total Tables:</label>
+                <input 
+                  type="number" 
+                  min="1" 
+                  max="100" 
+                  value={restaurantCapacity} 
+                  onChange={e => setRestaurantCapacity(parseInt(e.target.value) || 1)} 
+                  data-testid="capacity-input"
+                  className="w-20 bg-beige/30 border border-coffee/10 text-charcoal text-sm px-3 py-2 text-center rounded-xl focus:border-coffee/30 focus:outline-none" 
+                />
+                <button 
+                  onClick={handleUpdateCapacity} 
+                  data-testid="update-capacity-button"
+                  className="bg-coffee text-cream font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-sage transition-all">
+                  Update Capacity
+                </button>
+                <span className="text-charcoal/40 text-xs">
+                  Only {restaurantCapacity} table{restaurantCapacity > 1 ? 's' : ''} can be booked per time slot
+                </span>
+              </div>
+            </div>
+
+            {/* Bookings List */}
             {bookings.length === 0 ? <p className="text-charcoal/40 text-sm">No bookings yet</p> : (
               <div className="space-y-2">
                 {bookings.map(b => (

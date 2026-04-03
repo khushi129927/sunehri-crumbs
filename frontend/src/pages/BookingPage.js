@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { CalendarDays, Clock, Users, Phone, User } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CalendarDays, Clock, Users, Phone, User, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
@@ -11,6 +11,8 @@ export default function BookingPage() {
   const [form, setForm] = useState({ name: '', phone: '', date: '', time: '', guests: 2 });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [showAvailability, setShowAvailability] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,16 +21,35 @@ export default function BookingPage() {
       return;
     }
     setSubmitting(true);
+    setShowAvailability(false);
     try {
       await axios.post(`${API}/bookings`, form);
       toast.success('Booking confirmed!');
       setSuccess(true);
       setForm({ name: '', phone: '', date: '', time: '', guests: 2 });
-    } catch {
-      toast.error('Booking failed');
+      setAvailableTimes([]);
+    } catch (error) {
+      if (error.response?.status === 409 && error.response?.data?.detail) {
+        const detail = error.response.data.detail;
+        if (detail.available_times && detail.available_times.length > 0) {
+          setAvailableTimes(detail.available_times);
+          setShowAvailability(true);
+          toast.error(detail.message || 'No tables available at this time');
+        } else {
+          toast.error(detail.message || 'All tables are fully booked for this date');
+        }
+      } else {
+        toast.error('Booking failed. Please try again.');
+      }
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleTimeSelect = (time) => {
+    setForm({...form, time});
+    setShowAvailability(false);
+    setAvailableTimes([]);
   };
 
   return (
@@ -81,6 +102,42 @@ export default function BookingPage() {
               <input type="number" min="1" max="20" value={form.guests} onChange={e => setForm({...form, guests: parseInt(e.target.value) || 1})} data-testid="booking-guests-input"
                 className="w-full bg-beige/30 border border-coffee/10 text-charcoal rounded-xl py-3 px-4 focus:border-coffee/30 focus:outline-none focus:ring-2 focus:ring-coffee/5 transition-all" />
             </motion.div>
+
+            {/* Available Times Alert */}
+            <AnimatePresence>
+              {showAvailability && availableTimes.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="bg-amber-50 border border-amber-200 rounded-xl p-4"
+                  data-testid="available-times-alert"
+                >
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-amber-900 text-sm font-medium mb-2">
+                        Selected time is fully booked. Available times for {form.date}:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {availableTimes.map(time => (
+                          <button
+                            key={time}
+                            type="button"
+                            onClick={() => handleTimeSelect(time)}
+                            className="bg-white border border-amber-300 text-amber-900 text-xs px-3 py-1.5 rounded-lg hover:bg-amber-100 transition-colors"
+                            data-testid={`available-time-${time}`}
+                          >
+                            {time}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <motion.div variants={fadeUp} custom={5}>
               <button type="submit" disabled={submitting} data-testid="booking-submit-button"
                 className="w-full bg-coffee text-cream font-semibold py-3.5 rounded-full hover:bg-sage transition-all duration-300 disabled:opacity-50 mt-2">

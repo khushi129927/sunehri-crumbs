@@ -318,6 +318,48 @@ async def get_pending_waiter_calls(admin=Depends(get_current_admin)):
 # ============ Booking Routes ============
 @api_router.post("/bookings")
 async def create_booking(booking: BookingCreate):
+    # Get restaurant capacity setting
+    settings = await db.settings.find_one({"key": "restaurant_capacity"})
+    total_tables = settings.get("value", 10) if settings else 10
+    
+    # Count existing bookings for the same date and time
+    existing_bookings = await db.bookings.count_documents({
+        "date": booking.date,
+        "time": booking.time
+    })
+    
+    if existing_bookings >= total_tables:
+        # Find available time slots for the same date
+        all_times = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"]
+        available_times = []
+        
+        for time_slot in all_times:
+            count = await db.bookings.count_documents({
+                "date": booking.date,
+                "time": time_slot
+            })
+            if count < total_tables:
+                available_times.append(time_slot)
+        
+        if available_times:
+            raise HTTPException(
+                status_code=409, 
+                detail={
+                    "message": f"Sorry, all {total_tables} tables are booked for {booking.time}.",
+                    "available_times": available_times,
+                    "date": booking.date
+                }
+            )
+        else:
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "message": f"Sorry, all tables are fully booked for {booking.date}. Please try a different date.",
+                    "available_times": [],
+                    "date": booking.date
+                }
+            )
+    
     doc = booking.model_dump()
     doc["id"] = str(uuid.uuid4())
     doc["created_at"] = datetime.now(timezone.utc).isoformat()
@@ -330,12 +372,48 @@ async def get_bookings(admin=Depends(get_current_admin)):
     bookings = await db.bookings.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
     return bookings
 
+@api_router.get("/bookings/availability")
+async def check_availability(date: str = Query(...), time: str = Query(...)):
+    settings = await db.settings.find_one({"key": "restaurant_capacity"})
+    total_tables = settings.get("value", 10) if settings else 10
+    
+    existing_bookings = await db.bookings.count_documents({"date": date, "time": time})
+    available = total_tables - existing_bookings
+    
+    return {
+        "total_tables": total_tables,
+        "booked_tables": existing_bookings,
+        "available_tables": available,
+        "is_available": available > 0
+    }
+
 @api_router.delete("/bookings/{booking_id}")
 async def delete_booking(booking_id: str, admin=Depends(get_current_admin)):
     result = await db.bookings.delete_one({"id": booking_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Booking not found")
     return {"message": "Deleted"}
+
+# ============ Settings Routes ============
+@api_router.get("/settings/restaurant-capacity")
+async def get_restaurant_capacity(admin=Depends(get_current_admin)):
+    settings = await db.settings.find_one({"key": "restaurant_capacity"})
+    if settings:
+        return {"capacity": settings.get("value", 10)}
+    return {"capacity": 10}
+
+@api_router.put("/settings/restaurant-capacity")
+async def update_restaurant_capacity(capacity: int, admin=Depends(get_current_admin)):
+    if capacity < 1 or capacity > 100:
+        raise HTTPException(status_code=400, detail="Capacity must be between 1 and 100")
+    
+    await db.settings.update_one(
+        {"key": "restaurant_capacity"},
+        {"$set": {"key": "restaurant_capacity", "value": capacity, "updated_at": datetime.now(timezone.utc).isoformat()}},
+        upsert=True
+    )
+    return {"capacity": capacity, "message": "Restaurant capacity updated"}
+
 
 # ============ Review Routes ============
 @api_router.post("/reviews")
