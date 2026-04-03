@@ -139,7 +139,7 @@ export default function AdminDashboard() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-coffee/8 p-4 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:w-56 lg:shrink-0 lg:h-screen lg:sticky lg:top-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-coffee/8 p-4 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:w-56 lg:shrink-0 lg:h-auto lg:min-h-screen ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         data-testid="admin-sidebar"
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="pt-16 lg:pt-0 flex-1 p-4 sm:p-6 overflow-auto">
+      <main className="pt-16 lg:pt-0 flex-1 p-4 sm:p-6 overflow-auto lg:w-0">
         {loading && <div className="text-charcoal/30 text-sm mb-4">Loading...</div>}
 
         {/* Dashboard */}
