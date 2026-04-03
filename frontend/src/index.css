@@ -69,3 +69,14 @@
 
 /* Selection */
 ::selection { background: rgba(163, 177, 138, 0.3); color: #2B2B2B; }
+
+/* Hide Emergent Badge */
+#emergent-badge,
+a[href*="emergent.sh"],
+a[href*="emergentagent.com"][id*="badge"],
+[id*="emergent-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
